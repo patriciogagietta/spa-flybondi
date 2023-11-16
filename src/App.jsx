@@ -4,7 +4,7 @@ import Header from './templates/Header'
 import Error404 from './components/Error404'
 import './App.css'
 
-import {Route, Routes} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
 
@@ -16,6 +16,7 @@ function App() {
         <Route path='/:origen/:destino/' element={<Vuelos />} />
         <Route path='*' element={<Error404 />} />
       </Routes>
+      
     </>
   )
 }

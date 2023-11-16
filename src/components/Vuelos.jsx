@@ -1,24 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import useDatos from '../hooks/useDatos';
 
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Pagination } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Pagination, PaginationItem } from '@mui/material';
 
 function Vuelos() {
-    const { origen, destino } = useParams(); 
-    const { vueloOrigenDestino, isLoading, vuelosTotal, ordenarPorPrecio, page, handleChangePage, handleChangeTipe, isActive, vuelosPorPagina } = useDatos(origen, destino)
-    const navigate = useNavigate()
-
-
-    useEffect(() => {
-        let ruta = `/${origen}/${destino}`;
-
-        if (ordenarPorPrecio !== 'default') {
-            ruta += `/?orderByPrice=${ordenarPorPrecio}&page=${page}`;
-        } 
-
-        navigate(ruta)
-    }, [ordenarPorPrecio, page])
+    const { vueloOrigenDestino, isLoading, vuelosTotal, ordenarPorPrecio, page, handleChangePage, handleChangeTipe, isActive, vuelosPorPagina, origen, destino } = useDatos()
 
     const button = (tipo) =>{
         return isActive === tipo ? 'bg-zinc-900 text-amber-400' : 'bg-amber-400 hover:bg-zinc-900 hover:text-amber-400'
@@ -69,20 +56,26 @@ function Vuelos() {
                     </tbody>
                 </table>
             </div>
-            
-            <Pagination 
-                count={Math.ceil(vueloOrigenDestino.length / vuelosPorPagina)} 
+
+            <Pagination
                 page={page}
-                onChange={handleChangePage}
-                variant="outlined" 
+                count={Math.ceil(vueloOrigenDestino.length / vuelosPorPagina)}
+                variant="outlined"
                 color="primary"
                 sx={{
-                display: 'flex', 
-                justifyContent: 'center', 
-                '& .MuiPaginationItem-root': {color: 'yellow', }}}
+                    display: 'flex',
+                    justifyContent: 'center',
+                    '& .MuiPaginationItem-root': { color: 'yellow', }
+                }}
+                onChange={handleChangePage}
+                renderItem={(item) => (
+                    <PaginationItem
+                        component={Link}
+                        to={`/${origen}/${destino}${item.page === 1 ? '' : `?page=${item.page}`}`}
+                        {...item}
+                    />
+                )}
             />
-
-
             <div className='mb-40 flex justify-center mt-14'>
             <Link
                 to='/'

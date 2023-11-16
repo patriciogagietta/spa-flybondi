@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
 import dbFligths from '../../db.json'
+import { useState, useEffect } from "react";
+import { useParams, useLocation } from "react-router-dom";
 
-const useDatos = (origen, destino) => {
+const useDatos = () => {
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+
+    const { origen, destino } = useParams(); 
     const [vuelos, setVuelos] = useState([]);
     const [vueloOrigenDestino, setVueloOrigenDestino] = useState([])
     const [isLoading, setIsLoading] = useState(true)
-    const [ordenarPorPrecio, setordenarPorPrecio] = useState('default')
-    const [page, setPage] = useState(1)
+    const [ordenarPorPrecio, setordenarPorPrecio] = useState(query.get('order') || 'default')
+    const [page, setPage] = useState(parseInt(query.get('page') || '1', 10))
     const [isActive, setIsActive] = useState('default')
 
     useEffect(() => {
@@ -19,12 +24,13 @@ const useDatos = (origen, destino) => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             const vuelosFiltrados = vuelos.filter(vuelo => vuelo.origin === origen && vuelo.destination === destino);
+
             setVueloOrigenDestino(vuelosFiltrados);
             setIsLoading(false);
         }, 200);
 
         return () => clearTimeout(timeout);
-    }, [vuelos]);
+    }, [vuelos, origen, destino]);
 
     const copiaVuelos = [...vueloOrigenDestino].sort((a, b) => {
         if (ordenarPorPrecio === 'menor') {
@@ -60,7 +66,9 @@ const useDatos = (origen, destino) => {
         isActive,
         vuelosPorPagina,
         page,
-        ordenarPorPrecio
+        ordenarPorPrecio,
+        origen,
+        destino
     };
 }
 

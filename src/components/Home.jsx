@@ -30,7 +30,7 @@ function Home() {
                             <p> Origen: <span className="font-bold"> {vuelo.origin} </span> </p>
                             <p> Destino: <span className="font-bold"> {vuelo.destination} </span> </p>
                             <Link 
-                                to={`/${vuelo.origin}/${vuelo.destination}`} 
+                                to={`/${vuelo.origin}/${vuelo.destination}/`} 
                                 className="bg-amber-400 min-w-min  mt-6 font-bold py-2 px-4 rounded hover:bg-zinc-900 hover:text-amber-400 duration-500">
                                 Ver Vuelos
                             </Link>
