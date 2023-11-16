@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
 import useDatos from '../hooks/useDatos';
 
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem } from '@mui/material';
 
 function Vuelos() {
-    const { vueloOrigenDestino, isLoading, vuelosTotal, ordenarPorPrecio, page, handleChangePage, handleChangeTipe, isActive, vuelosPorPagina, origen, destino } = useDatos()
+    const { vueloOrigenDestino, isLoading, copiaVuelos, page, handleChangePage, handleChangeTipe, isActive, vuelosPorPagina, origen, destino } = useDatos()
 
     const button = (tipo) =>{
         return isActive === tipo ? 'bg-zinc-900 text-amber-400' : 'bg-amber-400 hover:bg-zinc-900 hover:text-amber-400'
@@ -44,7 +43,7 @@ function Vuelos() {
                         </tr>
                     </thead>
                     <tbody>
-                        {vuelosTotal.map((vuelo, i) => (
+                        {copiaVuelos.map((vuelo, i) => (
                             <tr key={i} className='text-center border-t border-amber-400'>
                                 <td className='p-2 sm:p-4'> {vuelo.origin}</td>
                                 <td className='p-2 sm:p-4'> {vuelo.destination}</td>

@@ -6,7 +6,7 @@ const useDatos = () => {
     const location = useLocation();
     const query = new URLSearchParams(location.search);
 
-    const { origen, destino } = useParams(); 
+    const { origen, destino } = useParams();
     const [vuelos, setVuelos] = useState([]);
     const [vueloOrigenDestino, setVueloOrigenDestino] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -32,6 +32,10 @@ const useDatos = () => {
         return () => clearTimeout(timeout);
     }, [vuelos, origen, destino]);
 
+    const vuelosPorPagina = 10
+    let indiceInicial = (page - 1) * vuelosPorPagina
+    let indiceFinal = indiceInicial + vuelosPorPagina
+
     const copiaVuelos = [...vueloOrigenDestino].sort((a, b) => {
         if (ordenarPorPrecio === 'menor') {
             return a.price - b.price
@@ -40,12 +44,7 @@ const useDatos = () => {
         }
 
         return 0
-    })
-
-    const vuelosPorPagina = 10
-    let indiceInicial = (page - 1) * vuelosPorPagina
-    let indiceFinal = indiceInicial + vuelosPorPagina
-    const vuelosTotal = copiaVuelos.slice(indiceInicial, indiceFinal)
+    }).slice(indiceInicial, indiceFinal)
 
     const handleChangePage = (e, value) => {
         setPage(value)
@@ -60,7 +59,7 @@ const useDatos = () => {
         vuelos,
         vueloOrigenDestino,
         isLoading,
-        vuelosTotal,
+        copiaVuelos,
         handleChangePage,
         handleChangeTipe,
         isActive,
